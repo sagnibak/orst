@@ -1,25 +1,10 @@
 use super::Sorter;
 
-fn heapify<T: Ord>(slice: &mut [T], root: usize) {
-    let mut largest = root;
-    let left = 2 * root + 1;
-    let right = 2 * root + 2;
-    let n = slice.len();
-
-    if left < n && slice[left] > slice[largest] {
-        largest = left;
-    }
-    if right < n && slice[right] > slice[largest] {
-        largest = right;
-    }
-    // at this point, `largest` points at the largest of root and its children
-
-    if largest != root {
-        slice.swap(largest, root);
-        heapify(slice, largest);
-    }
-}
-
+/// This is an in-place heapsort implementation. The code here is heavily
+/// inspired by the Geeks for Geeks article on the topic, which can be found
+/// [here](https://www.geeksforgeeks.org/heap-sort/).
+/// This implementation uses a max-heap to sort the provided slice in ascending
+/// order.
 pub struct HeapSort;
 impl<T> Sorter<T> for HeapSort {
     fn sort(&self, slice: &mut [T])
@@ -39,6 +24,26 @@ impl<T> Sorter<T> for HeapSort {
             // now we want to make sure that the rest is also sorted
             heapify(&mut slice[..unsorted], 0);
         }
+    }
+}
+
+fn heapify<T: Ord>(slice: &mut [T], root: usize) {
+    let mut largest = root;
+    let left = 2 * root + 1;
+    let right = 2 * root + 2;
+    let n = slice.len();
+
+    if left < n && slice[left] > slice[largest] {
+        largest = left;
+    }
+    if right < n && slice[right] > slice[largest] {
+        largest = right;
+    }
+    // at this point, `largest` points at the largest of root and its children
+
+    if largest != root {
+        slice.swap(largest, root);
+        heapify(slice, largest);
     }
 }
 
