@@ -37,7 +37,7 @@ fn main() {
     let counter = Rc::new(Cell::new(0));
 
     println!("algorithm n comparisons time");
-    for &n in &[0, 1, 10, 100, 1000, 10000] {
+    for &n in &[0, 1, 10, 100, 1000, 10000, 20000, 50000] {
         let mut values = Vec::with_capacity(n);
         for _ in 0..n {
             values.push(SortEvaluator {
@@ -59,6 +59,8 @@ fn main() {
             println!("{} {} {} {}", "selection", n, took.0, took.1);
             let took = bench(QuickSort, &values, &counter);
             println!("{} {} {} {}", "quick", n, took.0, took.1);
+            let took = bench(HeapSort, &values, &counter);
+            println!("{} {} {} {}", "heap", n, took.0, took.1);
             let took = bench(StdSorter, &values, &counter);
             println!("{} {} {} {}", "std", n, took.0, took.1);
         }
